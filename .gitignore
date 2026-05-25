@@ -1,0 +1,11 @@
+# Go build outputs
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# OS junk
+.DS_Store
+Thumbs.db
