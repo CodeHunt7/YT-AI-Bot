@@ -1,0 +1,22 @@
+﻿
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: yt-ai-bot-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: yt_ai_bot
+      POSTGRES_USER: ytbot
+      POSTGRES_PASSWORD: ytbot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ytbot -d yt_ai_bot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
