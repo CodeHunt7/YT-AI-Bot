@@ -1,10 +1,12 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log/slog"
 	"os"
+	"os/signal"
 
+	internalbot "github.com/CodeHunt7/YT-AI-Bot/internal/bot"
 	"github.com/CodeHunt7/YT-AI-Bot/internal/config"
 )
 
@@ -17,7 +19,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	logger.Info("bot starting", "env", cfg.Env)
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
 
-	fmt.Println("Telegram bot token loaded")
+	b, err := internalbot.New(cfg.TelegramBotToken, logger)
+	if err != nil {
+		logger.Error("telegram bot init failed", "error", err)
+		os.Exit(1)
+	}
+
+	logger.Info("bot starting", "env", cfg.Env)
+	b.Start(ctx)
 }
