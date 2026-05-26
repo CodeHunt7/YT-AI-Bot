@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Env              string
 	TelegramBotToken string
+	DatabaseURL      string
 }
 
 func Load() (Config, error) {
@@ -25,8 +26,14 @@ func Load() (Config, error) {
 		return Config{}, errors.New("TELEGRAM_BOT_TOKEN is required")
 	}
 
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		return Config{}, errors.New("DATABASE_URL is required")
+	}
+
 	return Config{
 		Env:              env,
 		TelegramBotToken: token,
+		DatabaseURL:      databaseURL,
 	}, nil
 }
