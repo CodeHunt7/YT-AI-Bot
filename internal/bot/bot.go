@@ -24,7 +24,7 @@ func New(token string, logger *slog.Logger) (*Bot, error) {
 	b := &Bot{
 		client:     client,
 		logger:     logger,
-		onboarding: app.NewOnboardingService(),
+		onboarding: app.NewOnboardingService(app.NewInMemoryOnboardingStore()),
 	}
 
 	client.RegisterHandler(tgbot.HandlerTypeMessageText, "/start", tgbot.MatchTypeExact, b.handleStart)
