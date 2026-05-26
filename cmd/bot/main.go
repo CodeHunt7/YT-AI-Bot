@@ -9,10 +9,15 @@ import (
 )
 
 func main() {
-	cfg := config.Load()
-
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+
+	cfg, err := config.Load()
+	if err != nil {
+		logger.Error("config load failed", "error", err)
+		os.Exit(1)
+	}
+
 	logger.Info("bot starting", "env", cfg.Env)
 
-	fmt.Println("YT AI Bot skeleton is running")
+	fmt.Println("Telegram bot token loaded")
 }
